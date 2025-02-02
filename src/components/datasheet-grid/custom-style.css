@@ -1,0 +1,5 @@
+:root {
+	--dsg-border-color: hsl(var(--muted));
+	--dsg-selection-border-color: hsl(var(--primary));
+	--dsg-header-text-color: hsl(var(--primary));
+}
