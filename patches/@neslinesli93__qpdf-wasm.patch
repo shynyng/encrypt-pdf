@@ -1,0 +1,57 @@
+diff --git a/dist/qpdf.d.ts b/dist/qpdf.d.ts
+index 1cf1b26a10c2bc18a9248d79a7b4cdcfdf2ada08..b4ecd2ef49ba015f03a2c7114d10e422f2aeb7f0 100644
+--- a/dist/qpdf.d.ts
++++ b/dist/qpdf.d.ts
+@@ -1,26 +1,31 @@
+ declare module "@neslinesli93/qpdf-wasm" {
+-  interface QpdfModule {
+-    ({ locateFile }: { locateFile: () => string }): Promise<QpdfInstance>;
+-  }
++	interface QpdfModule {
++		({ locateFile }: { locateFile: () => string }): Promise<QpdfInstance>;
++	}
+ 
+-  interface QpdfInstance {
+-    callMain: (args: string[]) => number;
+-    FS: EmscriptenFS;
+-    WORKERFS: any;
+-  }
++	interface QpdfInstance {
++		callMain: (args: string[]) => number;
++		FS: EmscriptenFS;
++		WORKERFS: any;
++	}
+ 
+-  interface EmscriptenFS {
+-    mkdir: (path: string) => void;
+-    mount: (
+-      type: QpdfInstance["WORKERFS"],
+-      opts: { blobs: { name: string; data: Blob }[] },
+-      mountPoint: string
+-    ) => void;
+-    unmount: (mountPoint: string) => void;
+-    readFile: (path: string) => Uint8Array;
+-  }
++	interface EmscriptenFS {
++		mkdir: (path: string) => void;
++		mount: (
++			type: QpdfInstance["WORKERFS"],
++			opts: { blobs: { name: string; data: Blob }[] },
++			mountPoint: string,
++		) => void;
++		unmount: (mountPoint: string) => void;
++		readFile: (path: string) => Uint8Array;
++		writeFile(
++			path: string,
++			data: string | Uint8Array,
++			options?: { encoding?: string },
++		): void;
++	}
+ 
+-  const module: QpdfModule;
+-  export default module;
+-  export type { QpdfInstance };
++	const module: QpdfModule;
++	export default module;
++	export type { QpdfInstance };
+ }
