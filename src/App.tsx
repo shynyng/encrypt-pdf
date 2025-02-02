@@ -7,10 +7,10 @@ import {
 	useDatasheetGridRef,
 	DownloadButton,
 	FileUploadButton,
-} from "./components";
-import { encryptPDF } from "./services";
-import { usePdfFiles } from "./hooks";
-import type { PdfFile } from "./hooks";
+} from "pdf-encryptor/components";
+import { encryptPDF } from "pdf-encryptor/services";
+import { usePdfFiles } from "pdf-encryptor/hooks";
+import type { PdfFile } from "pdf-encryptor/hooks";
 
 const App = () => {
 	const { pdfFiles, removePdfFile, appendPdfFiles, setPdfFiles } = usePdfFiles(
