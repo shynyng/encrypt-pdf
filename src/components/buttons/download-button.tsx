@@ -1,10 +1,13 @@
 import { useState } from "react";
 import type { ReactNode } from "react";
+import { Button } from "../ui/button";
+import { Loader2, Download } from "lucide-react";
 
 export type DownloadButtonProps = {
 	className?: string;
 	download: string;
-	children: ReactNode;
+	children?: ReactNode;
+	disabled?: boolean;
 	createBlob: () => Promise<Blob>;
 	onBeforeClick?: () => void;
 };
@@ -12,6 +15,7 @@ export type DownloadButtonProps = {
 export const DownloadButton = ({
 	className,
 	download,
+	disabled,
 	children,
 	createBlob,
 	onBeforeClick,
@@ -28,9 +32,10 @@ export const DownloadButton = ({
 		URL.revokeObjectURL(a.href);
 	};
 	return (
-		<button
-			className={`cursor-pointer ${className ?? ""}`}
+		<Button
+			className={className}
 			type="button"
+			size={children ? "default" : "icon"}
 			onClick={() => {
 				onBeforeClick?.();
 				setLoading(true);
@@ -38,9 +43,15 @@ export const DownloadButton = ({
 					.then((blob) => downloadBlob(blob))
 					.finally(() => setLoading(false));
 			}}
-			disabled={loading}
+			disabled={loading || disabled}
 		>
-			{loading ? "Processing ..." : children}
-		</button>
+			{loading ? (
+				<Loader2 className="animate-spin" />
+			) : children ? (
+				children
+			) : (
+				<Download />
+			)}
+		</Button>
 	);
 };

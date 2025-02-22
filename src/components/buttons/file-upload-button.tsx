@@ -1,47 +1,64 @@
 import type { InputHTMLAttributes, ReactNode } from "react";
+import { Button } from "../ui/button";
+import { Upload } from "lucide-react";
 
-export type FileUploadButtonProps = {
+type FileUploadButtonPropsBase = {
 	className?: string;
 	id: string;
-	children: ReactNode;
+	disabled?: boolean;
+	children?: ReactNode;
 	inputProps?: Partial<
-		Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "id">
+		Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "id" | "multiple">
 	>;
-	onUpload: (file: File[]) => void;
 };
+
+export type FileUploadButtonProps = (
+	| {
+			multiple: true;
+			onUpload: (file: File[]) => void;
+	  }
+	| {
+			multiple: false;
+			onUpload: (file: File) => void;
+	  }
+) &
+	FileUploadButtonPropsBase;
 
 export const FileUploadButton = ({
 	className,
 	id,
-	children,
+	children = "Upload more files",
+	disabled,
 	inputProps,
+	multiple,
 	onUpload,
 }: FileUploadButtonProps) => {
-	const clickInputLabel = () => {
-		const label = document.createElement("label");
-		label.setAttribute("for", id);
-		document.body.appendChild(label);
-		label.click();
-		document.body.removeChild(label);
-	};
 	return (
 		<>
-			<button
-				className={`cursor-pointer ${className ?? ""}`}
-				type="button"
-				onClick={clickInputLabel}
-			>
-				{children}
-			</button>
+			<Button asChild className={className} type="button" disabled={disabled}>
+				<label htmlFor={id}>
+					<Upload />
+					{children}
+				</label>
+			</Button>
 			<input
 				type="file"
 				id={id}
 				{...inputProps}
 				className="hidden"
+				multiple={multiple}
 				onChange={(v) => {
-					const files = v.target.files;
-					if (files === null) throw Error();
-					onUpload(Array.from(files));
+					const _files = v.target.files;
+					if (!_files) throw Error();
+					const files = Array.from(_files);
+
+					if (multiple) {
+						onUpload(files);
+					} else {
+						const file = files.at(0);
+						if (!file) throw Error();
+						onUpload(file);
+					}
 				}}
 			/>
 		</>
