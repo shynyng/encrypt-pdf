@@ -1,7 +1,7 @@
+import { Download, Loader2 } from "lucide-react";
 import { useState } from "react";
 import type { ReactNode } from "react";
 import { Button } from "../ui/button";
-import { Loader2, Download } from "lucide-react";
 
 export type DownloadButtonProps = {
 	className?: string;

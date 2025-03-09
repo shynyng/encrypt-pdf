@@ -1,6 +1,6 @@
+import { Upload } from "lucide-react";
 import type { InputHTMLAttributes, ReactNode } from "react";
 import { Button } from "../ui/button";
-import { Upload } from "lucide-react";
 
 type FileUploadButtonPropsBase = {
 	className?: string;
